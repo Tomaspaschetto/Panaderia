@@ -1,0 +1,38 @@
+body{
+    background:#f8f9fa;
+}
+
+.hero{
+    height:90vh;
+
+    background-image:url("../img/panaderia.jpg");
+    background-size:cover;
+    background-position:center;
+}
+
+.overlay{
+    background:rgba(0,0,0,0.55);
+
+    width:100%;
+    height:100%;
+
+    display:flex;
+    align-items:center;
+}
+
+.card{
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-10px);
+}
+
+.card img{
+    height:250px;
+    object-fit:cover;
+}
+
+h2{
+    font-weight:bold;
+}
