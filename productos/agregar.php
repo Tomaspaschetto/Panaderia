@@ -1,6 +1,6 @@
 <?php
 
-include("../includes/conexion.php");
+include("../Includes/conexion.php");
 
 if(isset($_POST["guardar"])){
 

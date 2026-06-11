@@ -23,11 +23,11 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../ventas/historial.php">Ventas</a>
+                    <a class="nav-link" href="../Ventas/historial.php">Ventas</a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="../stock/listar.php">Stock</a>
+                    <a class="nav-link" href="../Stock/listarStock.php">Stock</a>
                 </li>
 
                 <li class="nav-item">

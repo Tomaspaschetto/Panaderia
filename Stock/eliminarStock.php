@@ -1,14 +1,13 @@
 <?php
 
-include("../includes/conexion.php");
+include("../Includes/conexion.php");
 
-$id = $_GET["id"];
+$id = intval($_GET["id"]);
 
-$sql = "DELETE FROM productos
-        WHERE id_producto = $id";
+$sql = "DELETE FROM stock WHERE id_stock = $id";
+mysqli_query($conn, $sql);
 
-mysqli_query($conn,$sql);
-
-header("Location: listar.php");
+header("Location: listarStock.php");
+exit();
 
 ?>

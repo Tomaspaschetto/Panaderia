@@ -1,6 +1,6 @@
 <?php
 
-include("../includes/conexion.php");
+include("../Includes/conexion.php");
 
 $sql = "SELECT * FROM productos WHERE activo = 1";
 $resultado = mysqli_query($conn, $sql);

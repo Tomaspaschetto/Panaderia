@@ -1,8 +1,12 @@
 <?php
 
-include("../includes/conexion.php");
+include("../Includes/conexion.php");
 
-$sql = "SELECT * FROM productos WHERE activo = 1";
+$sql = "SELECT s.id_stock, s.cantidad_actual, s.stock_minimo, s.sin_stock, s.ultima_actualizacion, p.nombre AS producto, p.categoria
+        FROM stock s
+        LEFT JOIN productos p ON s.id_producto = p.id_producto
+        ORDER BY s.ultima_actualizacion DESC";
+
 $resultado = mysqli_query($conn, $sql);
 
 ?>
@@ -18,6 +22,7 @@ $resultado = mysqli_query($conn, $sql);
     <title>Gestión de Stock</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../css/Estilos.css">
 
 </head>
 
@@ -27,10 +32,13 @@ $resultado = mysqli_query($conn, $sql);
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h1>Gestión de Stock</h1>
+        <div>
+            <h1>Gestión de Stock</h1>
+            <p class="text-muted">Inventario actual y niveles de reposición.</p>
+        </div>
 
-        <a href="agregar.php" class="btn btn-success">
-            Nuevo Producto
+        <a href="agregarStock.php" class="btn btn-success">
+            Nuevo Registro
         </a>
 
     </div>
@@ -39,18 +47,18 @@ $resultado = mysqli_query($conn, $sql);
 
         <div class="card-body">
 
-            <table class="table table-striped table-bordered">
+            <table class="table table-striped table-bordered align-middle">
 
                 <thead class="table-dark">
 
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
-                        <th>Precio</th>
+                        <th>Producto</th>
                         <th>Categoría</th>
-                        <th>Stock</th>
-                        <th>Fecha Alta</th>
+                        <th>Cantidad Actual</th>
+                        <th>Stock Mínimo</th>
+                        <th>Sin Stock</th>
+                        <th>Actualizado</th>
                         <th>Acciones</th>
                     </tr>
 
@@ -58,44 +66,23 @@ $resultado = mysqli_query($conn, $sql);
 
                 <tbody>
 
-                <?php while($fila = mysqli_fetch_assoc($resultado)){ ?>
+                <?php while($fila = mysqli_fetch_assoc($resultado)): ?>
 
                     <tr>
-
-                        <td><?= $fila["id_producto"] ?></td>
-
-                        <td><?= $fila["nombre"] ?></td>
-
-                        <td><?= $fila["descripcion"] ?></td>
-
-                        <td>$<?= $fila["precio"] ?></td>
-
-                        <td><?= $fila["categoria"] ?></td>
-
-                        <td><?= $fila["stock"] ?></td>
-
-                        <td><?= $fila["fecha_alta"] ?></td>
-
+                        <td><?= $fila['id_stock'] ?></td>
+                        <td><?= htmlspecialchars($fila['producto'] ?: 'Sin producto') ?></td>
+                        <td><?= htmlspecialchars($fila['categoria'] ?: 'N/A') ?></td>
+                        <td><?= $fila['cantidad_actual'] ?></td>
+                        <td><?= $fila['stock_minimo'] ?></td>
+                        <td><?= $fila['sin_stock'] ? 'Sí' : 'No' ?></td>
+                        <td><?= $fila['ultima_actualizacion'] ?></td>
                         <td>
-
-                            <a
-                                href="editar.php?id=<?= $fila['id_producto'] ?>"
-                                class="btn btn-warning btn-sm">
-                                Editar
-                            </a>
-
-                            <a
-                                href="eliminar.php?id=<?= $fila['id_producto'] ?>"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('¿Desea eliminar este producto?')">
-                                Eliminar
-                            </a>
-
+                            <a href="editarStock.php?id=<?= $fila['id_stock'] ?>" class="btn btn-warning btn-sm">Editar</a>
+                            <a href="eliminarStock.php?id=<?= $fila['id_stock'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('¿Desea eliminar este registro de stock?')">Eliminar</a>
                         </td>
-
                     </tr>
 
-                <?php } ?>
+                <?php endwhile; ?>
 
                 </tbody>
 

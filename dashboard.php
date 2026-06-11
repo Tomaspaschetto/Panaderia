@@ -16,6 +16,7 @@ if(!isset($_SESSION["usuario"])){
     <title>Panel Principal</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/Estilos.css">
 
 </head>
 
@@ -23,9 +24,14 @@ if(!isset($_SESSION["usuario"])){
 
 <div class="container mt-5">
 
-    <h1 class="text-center mb-5">
-        Panel de Gestión - Panadería San José
-    </h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-center mb-0">
+            Panel de Gestión - Panadería San José
+        </h1>
+        <a href="index.php" class="btn btn-secondary">
+            Volver al Sitio
+        </a>
+    </div>
 
     <div class="row">
 
@@ -81,7 +87,7 @@ if(!isset($_SESSION["usuario"])){
 
                     <p>Registrar y consultar ventas.</p>
 
-                    <a href="ventas/historial.php"
+                    <a href="Ventas/historial.php"
                        class="btn btn-warning">
                         Ingresar
                     </a>
@@ -102,7 +108,7 @@ if(!isset($_SESSION["usuario"])){
 
                     <p>Controlar inventario.</p>
 
-                    <a href="stock/listar.php"
+                    <a href="Stock/listarStock.php"
                        class="btn btn-warning">
                         Ingresar
                     </a>
@@ -123,11 +129,10 @@ if(!isset($_SESSION["usuario"])){
 
                     <p>Consultar estadísticas.</p>
 
-    
-<a href="Stock/listarStock.php"
-   class="btn btn-warning">
-    Ingresar
-</a>
+                    <a href="reportes.php"
+                       class="btn btn-warning">
+                        Ingresar
+                    </a>
 
                 </div>
 

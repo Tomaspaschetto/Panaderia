@@ -2,12 +2,14 @@
 
 session_start();
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $usuario = trim($_POST["usuario"]);
 
-    $_SESSION["usuario"] = $_POST["usuario"];
-
-    header("Location: dashboard.php");
-    exit();
+    if (!empty($usuario)) {
+        $_SESSION["usuario"] = $usuario;
+        header("Location: dashboard.php");
+        exit();
+    }
 }
 
 ?>
@@ -20,6 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/Estilos.css">
 
 </head>
 
@@ -38,6 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <h3 class="text-center mb-4">
                         Iniciar Sesión
                     </h3>
+
+                    <?php if (!empty($error)): ?>
+                        <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
+                    <?php endif; ?>
 
                     <form method="POST">
 

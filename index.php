@@ -8,7 +8,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/estilos.css">
+    <link rel="stylesheet" href="css/Estilos.css">
 </head>
 
 <body>
@@ -40,12 +40,6 @@
                     <a class="nav-link" href="#estadisticas">Sistema</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="btn btn-warning ms-3" href="login.php">
-                        Ingresar
-                    </a>
-                </li>
-
             </ul>
 
         </div>
@@ -67,7 +61,7 @@
                 Control de productos, ventas, stock y proveedores
             </p>
 
-            <a href="login.php" class="btn btn-warning btn-lg">
+            <a href="login.php" class="btn btn-warning hero-btn">
                 Acceder al Sistema
             </a>
 
@@ -83,35 +77,71 @@
         Productos Destacados
     </h2>
 
-    <div class="row">
+<div class="row gx-4">
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="feature-image bread">Panadería</div>
+                    <div class="card-body">
+                        <h5>Pan Casero</h5>
+                        <p>Controla productos frescos, precios y categorías desde un panel ordenado.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="feature-image pastry">Facturas</div>
+                    <div class="card-body">
+                        <h5>Facturas Dulces</h5>
+                        <p>Administra inventario, proveedores y detalles para cada venta de repostería.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card feature-card h-100">
+                    <div class="feature-image cake">Tortas</div>
+                    <div class="card-body">
+                        <h5>Tortas y Pasteles</h5>
+                        <p>Organiza pedidos especiales con una interfaz clara y moderna.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section>
+
+<section id="servicios" class="container py-5">
+
+    <div class="text-center mb-5 section-heading">
+        <h2>Funciones del Sistema</h2>
+    </div>
+
+    <div class="row g-4">
 
         <div class="col-md-4">
-            <div class="card h-100 shadow">
-                <img src="img/pan.jpg" class="card-img-top">
-                <div class="card-body">
-                    <h5>Pan Casero</h5>
-                    <p>Pan recién horneado.</p>
-                </div>
+            <div class="service-card h-100">
+                <div class="service-icon">📦</div>
+                <h5>Gestión de Stock</h5>
+                <p>Visualiza cantidades, controla entradas y salidas, y evita quiebres de inventario.</p>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow">
-                <img src="img/facturas.jpg" class="card-img-top">
-                <div class="card-body">
-                    <h5>Facturas</h5>
-                    <p>Variedad de facturas frescas.</p>
-                </div>
+            <div class="service-card h-100">
+                <div class="service-icon">🧾</div>
+                <h5>Ventas y Reportes</h5>
+                <p>Registra ventas rápidamente y revisa la evolución del negocio en un solo lugar.</p>
             </div>
         </div>
 
         <div class="col-md-4">
-            <div class="card h-100 shadow">
-                <img src="img/torta.jpg" class="card-img-top">
-                <div class="card-body">
-                    <h5>Tortas</h5>
-                    <p>Pastelería artesanal.</p>
-                </div>
+            <div class="service-card h-100">
+                <div class="service-icon">🤝</div>
+                <h5>Proveedores</h5>
+                <p>Mantén información de proveedores actualizada y gestiona entregas de forma ágil.</p>
             </div>
         </div>
 
@@ -119,7 +149,7 @@
 
 </section>
 
-<section id="estadisticas" class="bg-light py-5">
+<section id="estadisticas" class="py-5">
 
     <div class="container">
 
