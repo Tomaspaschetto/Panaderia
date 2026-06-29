@@ -1,0 +1,243 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    color-scheme: dark;
+    --bg: #f2f4f7;
+    --surface: #ffffff;
+    --surface-strong: #f8fafc;
+    --text: #1f2937;
+    --muted: #6b7280;
+    --primary: #f59e0b;
+    --primary-dark: #d97706;
+    --border: rgba(15, 23, 42, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 100%);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+.navbar {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.navbar-brand {
+    letter-spacing: 0.02em;
+}
+
+.navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.9) !important;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: #fff !important;
+}
+
+.hero {
+    min-height: 85vh;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%);
+    color: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at top left, rgba(251, 191, 36, 0.18), transparent 35%);
+}
+
+.hero .container {
+    position: relative;
+    z-index: 1;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.hero h1 {
+    font-size: clamp(2.5rem, 4vw, 4.5rem);
+    line-height: 1.05;
+}
+
+.hero p.lead {
+    font-size: 1.15rem;
+    max-width: 34rem;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.hero-btn {
+    display: inline-block;
+    width: auto;
+    max-width: 260px;
+    padding: 0.75rem 1.4rem;
+    font-size: 1rem;
+}
+
+.btn-warning {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: #1f2937;
+}
+
+.btn-warning:hover,
+.btn-warning:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+    color: #fff;
+}
+
+.hero-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+}
+
+.section-heading {
+    position: relative;
+}
+
+.section-heading::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -0.75rem;
+    width: 4rem;
+    height: 3px;
+    background: var(--primary);
+}
+
+.card,
+.auth-card,
+.hero-card {
+    border: 0;
+    border-radius: 1rem;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.card {
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+}
+
+.feature-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+}
+
+.feature-image {
+    min-height: 240px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.feature-image.bread { background: linear-gradient(135deg, #fbbf24 0%, #f97316 100%); }
+.feature-image.pastry { background: linear-gradient(135deg, #8b5cf6 0%, #2563eb 100%); }
+.feature-image.cake { background: linear-gradient(135deg, #ec4899 0%, #ef4444 100%); }
+
+.feature-card p {
+    color: var(--muted);
+}
+
+#servicios .service-card {
+    min-height: 260px;
+    padding: 2rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+}
+
+.service-icon {
+    width: 3rem;
+    height: 3rem;
+    display: grid;
+    place-items: center;
+    border-radius: 0.9rem;
+    background: rgba(245, 158, 11, 0.14);
+    color: var(--primary);
+    margin-bottom: 1.25rem;
+    font-size: 1.4rem;
+}
+
+#estadisticas {
+    background: #fff;
+}
+
+.stat-card {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.05);
+}
+
+.stat-card h2 {
+    font-size: 2.25rem;
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    background: #0f172a;
+    color: rgba(255,255,255,0.8);
+}
+
+footer p {
+    margin: 0;
+}
+
+.auth-card {
+    padding: 2rem;
+    background: var(--surface);
+}
+
+.auth-card h3 {
+    margin-bottom: 1.5rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.15rem rgba(245, 158, 11, 0.15);
+}
+
+.table {
+    background: var(--surface);
+}
+
+@media (max-width: 767px) {
+    .hero {
+        min-height: 70vh;
+    }
+
+    .hero p.lead {
+        max-width: 100%;
+    }
+}
