@@ -31,9 +31,11 @@ if(!isset($_SESSION["usuario"])){
             <h1 class="text-center mb-0">
                 Panel de Gestión - Panadería San José
             </h1>
+            <!-- Muestra el nombre del usuario autenticado -->
             <p class="mb-0 text-muted">Usuario: <?= htmlspecialchars($_SESSION['nombre_completo'] ?? $_SESSION['usuario']) ?></p>
         </div>
         <div class="d-flex gap-2">
+            <!-- Enlace para cerrar la sesión actual -->
             <a href="logout.php" class="btn btn-danger">
                 Cerrar sesión
             </a>
