@@ -27,12 +27,20 @@ if(!isset($_SESSION["usuario"])){
 <div class="container mt-5">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="text-center mb-0">
-            Panel de Gestión - Panadería San José
-        </h1>
-        <a href="index.php" class="btn btn-secondary">
-            Volver al Sitio
-        </a>
+        <div>
+            <h1 class="text-center mb-0">
+                Panel de Gestión - Panadería San José
+            </h1>
+            <p class="mb-0 text-muted">Usuario: <?= htmlspecialchars($_SESSION['nombre_completo'] ?? $_SESSION['usuario']) ?></p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="logout.php" class="btn btn-danger">
+                Cerrar sesión
+            </a>
+            <a href="index.php" class="btn btn-secondary">
+                Volver al Sitio
+            </a>
+        </div>
     </div>
 
     <div class="row">
