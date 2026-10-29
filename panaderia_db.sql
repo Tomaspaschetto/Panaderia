@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 27-09-2026 a las 21:26:10
+-- Tiempo de generación: 29-10-2026 a las 21:17:27
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -93,7 +93,9 @@ CREATE TABLE `caja_movimientos` (
 
 INSERT INTO `caja_movimientos` (`id`, `caja_id`, `tipo`, `monto`, `descripcion`, `venta_id`, `usuario_id`, `created_at`) VALUES
 (1, 4, 'venta', 2.50, 'Venta VTA-2026090002', 12, 5, '2026-09-27 16:20:17'),
-(2, 4, 'venta', 123.00, 'Venta VTA-2026090003', 13, 5, '2026-09-27 16:21:37');
+(2, 4, 'venta', 123.00, 'Venta VTA-2026090003', 13, 5, '2026-09-27 16:21:37'),
+(3, 4, 'venta', 21651843.00, 'Venta VTA-2026100001', 15, 1, '2026-10-29 11:17:12'),
+(4, 4, 'venta', 1500.00, 'Venta VTA-2026100002', 16, 1, '2026-10-29 11:18:59');
 
 -- --------------------------------------------------------
 
@@ -314,7 +316,9 @@ INSERT INTO `movimientos_inventario` (`id`, `tipo_movimiento`, `producto_id`, `i
 (5, 'entrada_compra', NULL, 1, 5.00, 10.00, 15.00, 'Compra - OC-2026080003', 1, 3, 'Recepción de orden de compra', '2026-08-24 04:29:24'),
 (12, 'salida_venta', 1, NULL, 1.00, 10.00, 9.00, 'debug', 5, 10, 'debug', '2026-09-27 19:20:03'),
 (13, 'salida_venta', 2, NULL, 1.00, 10.00, 9.00, 'Venta - VTA-2026090002', 5, 12, 'Venta de 1 unidades de Pan Francés', '2026-09-27 19:20:17'),
-(14, 'salida_venta', 14, NULL, 1.00, 123.00, 122.00, 'Venta - VTA-2026090003', 5, 13, 'Venta de 1 unidades de Pan Tostado', '2026-09-27 19:21:37');
+(14, 'salida_venta', 14, NULL, 1.00, 123.00, 122.00, 'Venta - VTA-2026090003', 5, 13, 'Venta de 1 unidades de Pan Tostado', '2026-09-27 19:21:37'),
+(15, 'salida_venta', 7, NULL, 3.00, 1000000.00, 999997.00, 'Venta - VTA-2026100001', 1, 15, 'Venta de 3 unidades de Pan Blanco', '2026-10-29 14:17:12'),
+(16, 'salida_venta', 21, NULL, 1.00, 1.00, 0.00, 'Venta - VTA-2026100002', 1, 16, 'Venta de 1 unidades de Pan Integral Caja Blanca.', '2026-10-29 14:18:59');
 
 -- --------------------------------------------------------
 
@@ -565,14 +569,23 @@ INSERT INTO `productos` (`id`, `nombre`, `descripcion`, `precio`, `stock`, `cate
 (4, 'Pan Francés', '', 1.20, 10, NULL, '6a828927e8984.jpg', 0, 0, '2026-08-17 04:08:07', 1, 0),
 (5, 'Medialuna', 'Medialunas dulces y saladas.', 100.00, 36, NULL, '6a8bbee70a94a.jpg', 0, 1, '2026-08-24 03:47:51', 3, 0),
 (6, 'Alfajores de maicena', 'Alfajores de maicena con Almidón de Maíz', 700.00, 200, NULL, '6a8ca050b8294.jpg', 0, 1, '2026-08-24 19:49:36', 2, 0),
-(7, 'Pan Blanco', 'Pan Blanco con Harina 0000', 7217281.00, 1000000, NULL, '6a8ca0e6db1ec.jpg', 0, 1, '2026-08-24 19:52:06', 1, 0),
+(7, 'Pan Blanco', 'Pan Blanco con Harina 0000', 7217281.00, 999997, NULL, '6a8ca0e6db1ec.jpg', 0, 1, '2026-08-24 19:52:06', 1, 0),
 (8, 'Pan Negro', 'Pan Negro con Harina Integral', 450.00, 450, NULL, '6a8ca19e7e0cb.jpg', 0, 1, '2026-08-24 19:54:45', 1, 0),
 (9, 'Bizcochos de grasa', 'Bizcochitos con grasa.', 140.00, 190, NULL, '6a8ca200e21d2.jpg', 0, 1, '2026-08-24 19:56:48', 1, 0),
 (10, 'Pan2', 'joncinrcnoicniewnfiewnfiniwefnoewnfoiwfoifmwio', 321321.00, 414234, NULL, '', 1, 0, '2026-09-09 01:38:47', 1, 0),
 (11, 'dasdas', 'vererrfr3f24ffr3f333', 212.00, 2121, NULL, '', 0, 0, '2026-09-09 01:39:28', 1, 0),
 (12, 'Pan2', 'wdcfwecdcrevcrwfewfewfe', 312312.00, 331231, NULL, '', 0, 0, '2026-09-09 01:40:32', 1, 0),
 (13, 'uiercvuirejuieuinfcuiernuicfnruifncuirefuruiefncuiernfuierfnruifnciuercfnuerfcuiernfuiernfuiernferiufnernfnrfuierfnuiernruiefnfuirneifnreinfnfuiernfui', 'hola', 121212.00, 213321, NULL, '', 0, 0, '2026-09-09 02:27:26', 1, 0),
-(14, 'Pan Tostado', 'Pan tostado', 123.00, 122, NULL, '', 0, 1, '2026-09-09 02:36:25', 1, 0);
+(14, 'Pan Tostado', 'Pan tostado', 123.00, 122, NULL, '', 0, 0, '2026-09-09 02:36:25', 1, 0),
+(15, 'pan', '', 1.00, -11111, NULL, '', 0, 0, '2026-10-16 23:44:31', 3, 0),
+(16, 'Pan Integral Prueba', '', 1500.00, 1, NULL, '', 0, 0, '2026-10-29 12:40:33', NULL, 0),
+(17, 'Pan Blanco2121', '', 212121.00, -2000, NULL, '', 0, 0, '2026-10-29 12:48:12', NULL, 0),
+(18, 'Pan de Prueba Cero', '', 0.00, 1, NULL, '', 0, 0, '2026-10-29 12:51:27', NULL, 0),
+(19, 'Pan de Prueba Stock Negativo.', '', 1500.00, -5, NULL, '', 0, 0, '2026-10-29 12:53:13', NULL, 0),
+(20, 'Pan de Prueba Decimal', '', 1500.50, 2, NULL, '', 0, 1, '2026-10-29 12:54:41', NULL, 0),
+(21, 'Pan Integral Caja Blanca.', '', 1500.00, 0, NULL, '', 0, 1, '2026-10-29 13:18:13', NULL, 0),
+(22, 'nombre válido', '', 1500.00, 2, NULL, '', 0, 1, '2026-10-29 13:23:01', NULL, 0),
+(23, 'Pan Integral Caja Blanca 2', '', 1500.00, 2, NULL, '', 0, 1, '2026-10-29 19:11:08', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -880,7 +893,9 @@ CREATE TABLE `ventas` (
 INSERT INTO `ventas` (`id`, `numero`, `cliente_id`, `usuario_id`, `fecha`, `subtotal`, `descuento`, `total`, `medio_pago`, `estado`, `observaciones`) VALUES
 (10, 'DBG-TEST-1', NULL, 5, '2026-09-27 16:20:03', 100.00, 0.00, 100.00, 'efectivo', 'completada', 'debug'),
 (12, 'VTA-2026090002', NULL, 5, '2026-09-27 16:20:17', 2.50, 0.00, 2.50, 'efectivo', 'completada', 'debug'),
-(13, 'VTA-2026090003', NULL, 5, '2026-09-27 16:21:37', 123.00, 0.00, 123.00, 'efectivo', 'completada', '');
+(13, 'VTA-2026090003', NULL, 5, '2026-09-27 16:21:37', 123.00, 0.00, 123.00, 'efectivo', 'completada', ''),
+(15, 'VTA-2026100001', NULL, 1, '2026-10-29 11:17:12', 21651843.00, 0.00, 21651843.00, 'efectivo', 'completada', ''),
+(16, 'VTA-2026100002', NULL, 1, '2026-10-29 11:18:59', 1500.00, 0.00, 1500.00, 'efectivo', 'completada', '');
 
 -- --------------------------------------------------------
 
@@ -904,7 +919,9 @@ CREATE TABLE `venta_detalles` (
 INSERT INTO `venta_detalles` (`id`, `venta_id`, `producto_id`, `cantidad`, `precio_unitario`, `subtotal`) VALUES
 (10, 10, 1, 1.00, 100.00, 100.00),
 (12, 12, 2, 1.00, 2.50, 2.50),
-(13, 13, 14, 1.00, 123.00, 123.00);
+(13, 13, 14, 1.00, 123.00, 123.00),
+(15, 15, 7, 3.00, 7217281.00, 21651843.00),
+(16, 16, 21, 1.00, 1500.00, 1500.00);
 
 --
 -- Índices para tablas volcadas
@@ -1169,7 +1186,7 @@ ALTER TABLE `caja`
 -- AUTO_INCREMENT de la tabla `caja_movimientos`
 --
 ALTER TABLE `caja_movimientos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `categorias`
@@ -1223,7 +1240,7 @@ ALTER TABLE `mermas`
 -- AUTO_INCREMENT de la tabla `movimientos_inventario`
 --
 ALTER TABLE `movimientos_inventario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `ordenes_compra`
@@ -1277,7 +1294,7 @@ ALTER TABLE `produccion_ingredientes`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedores`
@@ -1325,13 +1342,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `ventas`
 --
 ALTER TABLE `ventas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `venta_detalles`
 --
 ALTER TABLE `venta_detalles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- Restricciones para tablas volcadas
