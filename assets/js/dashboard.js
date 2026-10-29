@@ -11,36 +11,57 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function cargarDatosDashboard() {
     fetch('index.php?modulo=reportes&accion=datosDashboardJson')
-        .then(response => {
-            if (!response.ok) throw new Error('Error en la respuesta');
-            return response.json();
-        })
+        .then(leerRespuesta)
         .then(data => {
             actualizarEstadisticas(data.stats);
             crearGraficos(data.graficos);
-            cargarActividades();
         })
         .catch(error => {
-            console.error('Error al cargar datos:', error);
-            usarDatosEjemplo();
+            console.error('Error al cargar datos del dashboard:', error);
+            mostrarErrorDashboard(error);
         });
+
+    cargarActividades();
+}
+
+function leerRespuesta(response) {
+    return response.json().then(data => {
+        if (!response.ok) {
+            throw new Error(data.error || 'El servidor no pudo completar la solicitud.');
+        }
+        return data;
+    }).catch(error => {
+        if (error instanceof SyntaxError) {
+            throw new Error('La respuesta del servidor no tiene un formato válido.');
+        }
+        throw error;
+    });
 }
 
 function actualizarEstadisticas(stats) {
-    const elementos = [
-        { selector: '.stat-card:nth-child(1) .stat-value', valor: '$' + (stats.ventas_dia || '0.00') },
-        { selector: '.stat-card:nth-child(2) .stat-value', valor: '$' + (stats.ventas_mes || '0.00') },
-        { selector: '.stat-card:nth-child(3) .stat-value', valor: stats.pedidos_pendientes || 0 },
-        { selector: '.stat-card:nth-child(4) .stat-value', valor: stats.stock_bajo || 0 },
-        { selector: '.stat-card:nth-child(5) .stat-value', valor: stats.produccion_dia || 0 },
-        { selector: '.stat-card:nth-child(6) .stat-value', valor: '$' + (stats.caja_actual || '0.00') }
+    const valores = [
+        formatearMoneda(stats.ventas_dia),
+        formatearMoneda(stats.ventas_mes),
+        formatearNumero(stats.pedidos_pendientes),
+        formatearNumero(stats.stock_bajo),
+        formatearNumero(stats.produccion_dia),
+        formatearMoneda(stats.caja_actual)
     ];
+    const etiquetas = [
+        'Ventas registradas hoy',
+        'Ventas del mes en curso',
+        'Pedidos sin entregar',
+        'Productos e ingredientes bajo mínimo',
+        'Unidades terminadas hoy',
+        'Saldo esperado de la caja abierta'
+    ];
+    const tarjetas = document.querySelectorAll('.stats-grid .stat-card');
 
-    elementos.forEach((item) => {
-        const el = document.querySelector(item.selector);
-        if (el) {
-            el.textContent = item.valor;
-        }
+    tarjetas.forEach((tarjeta, index) => {
+        const valor = tarjeta.querySelector('.stat-value');
+        const detalle = tarjeta.querySelector('.stat-change');
+        if (valor) valor.textContent = valores[index] ?? '—';
+        if (detalle) detalle.textContent = etiquetas[index] ?? '';
     });
 }
 
@@ -53,10 +74,10 @@ function crearGraficos(graficos) {
         ventasChart = new Chart(ctx1, {
             type: 'line',
             data: {
-                labels: graficos.ventas_semana?.labels || ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                labels: graficos.ventas_semana.labels,
                 datasets: [{
                     label: 'Ventas',
-                    data: graficos.ventas_semana?.values || [0, 0, 0, 0, 0, 0, 0],
+                    data: graficos.ventas_semana.values,
                     borderColor: '#6C3A2A',
                     backgroundColor: 'rgba(108, 58, 42, 0.08)',
                     borderWidth: 3,
@@ -108,9 +129,9 @@ function crearGraficos(graficos) {
     if (ctx2) {
         if (categoriasChart) categoriasChart.destroy();
         
-        const labels = graficos.ventas_categorias?.labels || ['Sin datos'];
-        const values = graficos.ventas_categorias?.values || [1];
-        const colores = graficos.ventas_categorias?.colores || ['#6C3A2A'];
+        const labels = graficos.ventas_categorias.labels;
+        const values = graficos.ventas_categorias.values;
+        const colores = graficos.ventas_categorias.colores;
         
         categoriasChart = new Chart(ctx2, {
             type: 'doughnut',
@@ -152,39 +173,77 @@ function crearGraficos(graficos) {
 }
 
 function cargarActividades() {
-    // Versión simplificada - solo muestra mensaje
-    const tbody = document.getElementById('ultimasActividades');
-    if (tbody) {
-        tbody.innerHTML = `
-            <tr>
-                <td colspan="4" class="text-center text-muted">
-                    <i class="bi bi-info-circle"></i> Las actividades se registrarán automáticamente
-                </td>
-            </tr>
-        `;
-    }
+    fetch('index.php?modulo=reportes&accion=ultimasActividades')
+        .then(leerRespuesta)
+        .then(renderizarActividades)
+        .catch(error => {
+            console.error('Error al cargar las actividades:', error);
+            renderizarMensajeActividad('No se pudieron cargar las actividades.');
+        });
 }
 
-function usarDatosEjemplo() {
-    const stats = {
-        ventas_dia: '0.00',
-        ventas_mes: '0.00',
-        pedidos_pendientes: 0,
-        stock_bajo: 0,
-        produccion_dia: 0,
-        caja_actual: '0.00'
-    };
-    const graficos = {
-        ventas_semana: {
-            labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
-            values: [0, 0, 0, 0, 0, 0, 0]
-        },
-        ventas_categorias: {
-            labels: ['Panes', 'Pastelería', 'Facturas', 'Galletas', 'Otros'],
-            values: [0, 0, 0, 0, 0],
-            colores: ['#6C3A2A', '#D4A574', '#E8C99B', '#8B5A4A', '#A8A8A8']
-        }
-    };
-    actualizarEstadisticas(stats);
-    crearGraficos(graficos);
+function renderizarActividades(actividades) {
+    const tbody = document.getElementById('ultimasActividades');
+    if (!tbody) return;
+
+    tbody.replaceChildren();
+    if (!Array.isArray(actividades) || actividades.length === 0) {
+        renderizarMensajeActividad('Todavía no hay actividades registradas.');
+        return;
+    }
+
+    actividades.forEach(actividad => {
+        const fila = document.createElement('tr');
+        [actividad.fecha, actividad.usuario || 'Sistema', actividad.accion, actividad.modulo]
+            .forEach(valor => {
+                const celda = document.createElement('td');
+                celda.textContent = valor || '—';
+                fila.appendChild(celda);
+            });
+        tbody.appendChild(fila);
+    });
+}
+
+function renderizarMensajeActividad(mensaje) {
+    const tbody = document.getElementById('ultimasActividades');
+    if (!tbody) return;
+
+    const fila = document.createElement('tr');
+    const celda = document.createElement('td');
+    celda.colSpan = 4;
+    celda.className = 'text-center text-muted';
+    celda.textContent = mensaje;
+    fila.appendChild(celda);
+    tbody.replaceChildren(fila);
+}
+
+function mostrarErrorDashboard(error) {
+    document.querySelectorAll('.stats-grid .stat-value').forEach(valor => {
+        valor.textContent = '—';
+    });
+    document.querySelectorAll('.stats-grid .stat-change').forEach(detalle => {
+        detalle.textContent = 'No disponible';
+    });
+    document.querySelectorAll('.charts-grid .chart-card').forEach(tarjeta => {
+        const aviso = document.createElement('p');
+        aviso.className = 'text-muted text-center mt-4';
+        aviso.textContent = error.message;
+        tarjeta.appendChild(aviso);
+        const canvas = tarjeta.querySelector('canvas');
+        if (canvas) canvas.hidden = true;
+    });
+}
+
+function formatearMoneda(valor) {
+    return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        minimumFractionDigits: 2
+    }).format(Number(valor) || 0);
+}
+
+function formatearNumero(valor) {
+    return new Intl.NumberFormat('es-AR', {
+        maximumFractionDigits: 2
+    }).format(Number(valor) || 0);
 }

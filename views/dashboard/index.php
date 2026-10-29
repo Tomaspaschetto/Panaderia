@@ -120,14 +120,14 @@ if ($esUsuarioPanadero) {
     <div class="stats-grid">
         <div class="stat-card animate-in">
             <div class="stat-icon primary"><i class="bi bi-cash-stack"></i></div>
-            <div class="stat-value">$0.00</div>
+            <div class="stat-value">$0,00</div>
             <div class="stat-label">Ventas del Día</div>
             <div class="stat-change neutral">Cargando...</div>
         </div>
 
         <div class="stat-card animate-in">
             <div class="stat-icon success"><i class="bi bi-calendar3"></i></div>
-            <div class="stat-value">$0.00</div>
+            <div class="stat-value">$0,00</div>
             <div class="stat-label">Ventas del Mes</div>
             <div class="stat-change neutral">Cargando...</div>
         </div>
@@ -155,7 +155,7 @@ if ($esUsuarioPanadero) {
 
         <div class="stat-card animate-in">
             <div class="stat-icon secondary"><i class="bi bi-wallet2"></i></div>
-            <div class="stat-value">$0.00</div>
+            <div class="stat-value">$0,00</div>
             <div class="stat-label">Caja Actual</div>
             <div class="stat-change neutral">Cargando...</div>
         </div>
@@ -182,18 +182,6 @@ if ($esUsuarioPanadero) {
 
     <!-- ====== ACCIONES RÁPIDAS ====== -->
     <div class="quick-actions">
-        <a href="index.php?modulo=ventas&accion=nueva" class="btn btn-success">
-            <i class="bi bi-plus-circle"></i> Nueva Venta
-        </a>
-        <a href="index.php?modulo=pedidos&accion=crear" class="btn btn-primary">
-            <i class="bi bi-plus-circle"></i> Nuevo Pedido
-        </a>
-        <a href="index.php?modulo=produccion&accion=crear" class="btn btn-warning">
-            <i class="bi bi-plus-circle"></i> Nueva Producción
-        </a>
-        <a href="index.php?modulo=compras&accion=crear" class="btn btn-info">
-            <i class="bi bi-plus-circle"></i> Nueva Compra
-        </a>
         <a href="index.php?modulo=productos&accion=crear" class="btn btn-secondary">
             <i class="bi bi-plus-circle"></i> Nuevo Producto
         </a>

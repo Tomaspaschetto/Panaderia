@@ -95,90 +95,98 @@ class ReportesController {
     // ============================================================
     public function datosDashboardJson() {
         $this->verificarPermiso();
-        
-        $datos = $this->modelo->datosDashboard();
-        
-        // Obtener ventas de la semana para el gráfico
-        $fecha_inicio = date('Y-m-d', strtotime('-6 days'));
-        $fecha_fin = date('Y-m-d');
-        $ventas_semana = $this->modelo->ventasPorPeriodo($fecha_inicio, $fecha_fin);
-        
-        // Preparar datos para el gráfico de ventas semanales
-        $labels = [];
-        $values = [];
-        $dias_semana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
-        
-        for ($i = 6; $i >= 0; $i--) {
-            $fecha = date('Y-m-d', strtotime("-$i days"));
-            $labels[] = $dias_semana[date('N', strtotime($fecha)) - 1];
-            $found = false;
-            foreach ($ventas_semana as $v) {
-                if ($v['fecha'] == $fecha) {
-                    $values[] = floatval($v['total_ventas']);
-                    $found = true;
-                    break;
+
+        header('Content-Type: application/json; charset=utf-8');
+        try {
+            $datos = $this->modelo->datosDashboard();
+
+            $fecha_inicio = date('Y-m-d', strtotime('-6 days'));
+            $fecha_fin = date('Y-m-d');
+            $ventas_semana = $this->modelo->ventasPorPeriodo($fecha_inicio, $fecha_fin);
+
+            $labels = [];
+            $values = [];
+            $dias_semana = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
+
+            for ($i = 6; $i >= 0; $i--) {
+                $fecha = date('Y-m-d', strtotime("-$i days"));
+                $labels[] = $dias_semana[date('N', strtotime($fecha)) - 1];
+                $found = false;
+                foreach ($ventas_semana as $v) {
+                    if ($v['fecha'] == $fecha) {
+                        $values[] = (float)$v['total_ventas'];
+                        $found = true;
+                        break;
+                    }
+                }
+                if (!$found) {
+                    $values[] = 0;
                 }
             }
-            if (!$found) {
-                $values[] = 0;
+
+            $ventas_categorias = $this->modelo->ventasPorCategoria($fecha_inicio, $fecha_fin);
+            $categorias_labels = [];
+            $categorias_values = [];
+            $colores = ['#6C3A2A', '#D4A574', '#E8C99B', '#8B5A4A', '#A8A8A8', '#2D8B46', '#E8A838', '#C0392B'];
+            $categorias_colores = [];
+
+            $i = 0;
+            foreach ($ventas_categorias as $cat) {
+                if ($i < 8) {
+                    $categorias_labels[] = $cat['categoria'];
+                    $categorias_values[] = (float)$cat['total_vendido'];
+                    $categorias_colores[] = $colores[$i % count($colores)];
+                    $i++;
+                }
             }
-        }
-        
-        // Obtener ventas por categoría
-        $ventas_categorias = $this->modelo->ventasPorCategoria($fecha_inicio, $fecha_fin);
-        $categorias_labels = [];
-        $categorias_values = [];
-        $colores = ['#6C3A2A', '#D4A574', '#E8C99B', '#8B5A4A', '#A8A8A8', '#2D8B46', '#E8A838', '#C0392B'];
-        $categorias_colores = [];
-        
-        $i = 0;
-        foreach ($ventas_categorias as $cat) {
-            if ($i < 8) {
-                $categorias_labels[] = $cat['categoria'];
-                $categorias_values[] = floatval($cat['total_vendido']);
-                $categorias_colores[] = $colores[$i % count($colores)];
-                $i++;
+
+            if (empty($categorias_labels)) {
+                $categorias_labels = ['Sin ventas'];
+                $categorias_values = [0];
+                $categorias_colores = ['#A8A8A8'];
             }
-        }
-        
-        // Si no hay datos, usar valores de ejemplo
-        if (empty($categorias_labels)) {
-            $categorias_labels = ['Panes', 'Pastelería', 'Facturas', 'Galletas', 'Otros'];
-            $categorias_values = [0, 0, 0, 0, 0];
-            $categorias_colores = ['#6C3A2A', '#D4A574', '#E8C99B', '#8B5A4A', '#A8A8A8'];
-        }
-        
-        $response = [
-            'stats' => [
-                'ventas_dia' => number_format($datos['ventas_dia'] ?? 0, 2),
-                'ventas_mes' => number_format($datos['ventas_mes'] ?? 0, 2),
-                'pedidos_pendientes' => $datos['pedidos_pendientes'] ?? 0,
-                'stock_bajo' => ($datos['stock_bajo'] ?? 0) + ($datos['ingredientes_bajo'] ?? 0),
-                'produccion_dia' => number_format($datos['produccion_dia'] ?? 0),
-                'caja_actual' => number_format($datos['caja_actual'] ?? 0, 2)
-            ],
-            'graficos' => [
-                'ventas_semana' => [
-                    'labels' => $labels,
-                    'values' => $values
+
+            $response = [
+                'stats' => [
+                    'ventas_dia' => (float)($datos['ventas_dia'] ?? 0),
+                    'ventas_mes' => (float)($datos['ventas_mes'] ?? 0),
+                    'pedidos_pendientes' => (int)($datos['pedidos_pendientes'] ?? 0),
+                    'stock_bajo' => (int)($datos['stock_bajo'] ?? 0) + (int)($datos['ingredientes_bajo'] ?? 0),
+                    'produccion_dia' => (float)($datos['produccion_dia'] ?? 0),
+                    'caja_actual' => (float)($datos['caja_actual'] ?? 0)
                 ],
-                'ventas_categorias' => [
-                    'labels' => $categorias_labels,
-                    'values' => $categorias_values,
-                    'colores' => $categorias_colores
+                'graficos' => [
+                    'ventas_semana' => [
+                        'labels' => $labels,
+                        'values' => $values
+                    ],
+                    'ventas_categorias' => [
+                        'labels' => $categorias_labels,
+                        'values' => $categorias_values,
+                        'colores' => $categorias_colores
+                    ]
                 ]
-            ]
-        ];
-        
-        header('Content-Type: application/json');
-        echo json_encode($response);
+            ];
+
+            echo json_encode($response, JSON_UNESCAPED_UNICODE);
+        } catch (PDOException $e) {
+            error_log('Error al cargar datos del dashboard: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudieron cargar los datos del dashboard.']);
+        }
     }
 
     public function ultimasActividades() {
         $this->verificarPermiso();
-        $actividades = $this->modelo->obtenerUltimasActividades(10);
-        header('Content-Type: application/json');
-        echo json_encode($actividades);
+        header('Content-Type: application/json; charset=utf-8');
+        try {
+            $actividades = $this->modelo->obtenerUltimasActividades(10);
+            echo json_encode($actividades, JSON_UNESCAPED_UNICODE);
+        } catch (PDOException $e) {
+            error_log('Error al cargar las actividades del dashboard: ' . $e->getMessage());
+            http_response_code(500);
+            echo json_encode(['error' => 'No se pudieron cargar las actividades recientes.']);
+        }
     }
 }
 ?>

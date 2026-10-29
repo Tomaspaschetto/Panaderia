@@ -476,10 +476,10 @@ class Reporte {
         $mermas_dia = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 
         // Caja actual
-        $sql_caja = "SELECT monto_contado FROM caja WHERE estado = 'abierta' ORDER BY id DESC LIMIT 1";
+        $sql_caja = "SELECT monto_esperado FROM caja WHERE estado = 'abierta' ORDER BY id DESC LIMIT 1";
         $stmt = $this->pdo->query($sql_caja);
         $caja = $stmt->fetch(PDO::FETCH_ASSOC);
-        $caja_actual = $caja['monto_contado'] ?? 0;
+        $caja_actual = $caja['monto_esperado'] ?? 0;
 
         return [
             'ventas_dia' => $ventas_dia,
@@ -499,22 +499,19 @@ class Reporte {
     // ============================================================
     
     public function obtenerUltimasActividades($limite = 10) {
-        try {
-            $sql = "SELECT 
-                        DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i') as fecha,
-                        u.nombre as usuario,
-                        a.accion,
-                        a.modulo
-                    FROM auditoria a
-                    LEFT JOIN usuarios u ON a.usuario_id = u.id
-                    ORDER BY a.created_at DESC
-                    LIMIT ?";
-            $stmt = $this->pdo->prepare($sql);
-            $stmt->execute([$limite]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return [];
-        }
+        $sql = "SELECT
+                    DATE_FORMAT(a.created_at, '%d/%m/%Y %H:%i') as fecha,
+                    u.nombre as usuario,
+                    a.accion,
+                    a.modulo
+                FROM auditoria a
+                LEFT JOIN usuarios u ON a.usuario_id = u.id
+                ORDER BY a.created_at DESC
+                LIMIT ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, max(1, (int)$limite), PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 
